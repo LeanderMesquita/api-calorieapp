@@ -8,5 +8,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:api');
 
-Route::post('/users/login', [UserController::class, 'login']);
-Route::resource('/users', UserController::class)->only(['store', 'index', 'show', 'update', 'destroy']);
+Route::post('/users', [UserController::class, 'store']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::resource('/users', UserController::class)
+        ->only(['index', 'show', 'update', 'destroy']);
+});

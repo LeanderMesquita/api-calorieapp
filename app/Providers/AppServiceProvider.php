@@ -25,19 +25,18 @@ class AppServiceProvider extends ServiceProvider
     {
         Passport::ignoreRoutes();
         Passport::hashClientSecrets();
-        Passport::enablePasswordGrant(); 
+        Passport::enablePasswordGrant();
         Passport::tokensExpireIn(now()->addDays(1));
         Passport::refreshTokensExpireIn(now()->addDays(7));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
 
         Gate::policy(User::class, UserPolicy::class);
-        
+
 
         Passport::tokensCan([
-            'users-management' => 'Manage users and perform admin tasks',
+            'admin' => 'Manage users and perform admin tasks',
             'user' => 'Default user scope, to manage their profile, meals and entries'
         ]);
         Passport::setDefaultScope(['user']);
-
     }
 }
