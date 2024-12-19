@@ -9,11 +9,24 @@ use Illuminate\Support\Facades\Log;
 class UserPolicy
 {
     /**
+     * Perform pre-authorization checks.
+     */
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->role->name === 'admin') {
+            return true;
+        }
+    
+        return null;
+    }
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->name === 'admin';
+        #return $user->role->name === 'admin';
+        return false;
     }
 
     /**
@@ -21,7 +34,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->id === $model->id || $user->role->name === 'admin';
+        return $user->id === $model->id;
     }
 
     /**
@@ -45,7 +58,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->id === $model->id || $user->role->name === 'admin';
+        return $user->id === $model->id;
     }
 
     /**
@@ -53,7 +66,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return $user->id === $model->id || $user->role->name === 'admin';
+        return $user->id === $model->id;
     }
 
     /**
