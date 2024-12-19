@@ -7,6 +7,7 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +46,7 @@ class UserController extends Controller
         ]);
 
         $user->save();
-
+        event(new Registered($user));
         return response()->json([
             'message' => 'User created',
             'user' => new UserResource($user)
