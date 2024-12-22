@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\EntrieController;
 use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -17,5 +18,8 @@ Route::middleware('auth:api')->group(function () {
         ->only(['index', 'show', 'update', 'destroy']);
 
     Route::apiResource('meals', MealController::class)
-        ->only(['index', 'store','show', 'update', 'destroy']);
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::apiResource('entries', EntrieController::class)
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
 });
