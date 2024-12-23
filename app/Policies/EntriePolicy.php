@@ -39,9 +39,9 @@ class EntriePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Entrie $entrie): bool
     {
-        return true;
+        return $user->meals()->where('id', $entrie->meal_id)->exists();
     }
 
     /**
@@ -49,7 +49,7 @@ class EntriePolicy
      */
     public function update(User $user, Entrie $entrie): bool
     {
-        return $user->id === $entrie->user_id;
+        return $user->id === $entrie->user_id && $user->meals()->where('id', $entrie->meal_id)->exists();
     }
 
     /**

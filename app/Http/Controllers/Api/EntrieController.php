@@ -23,7 +23,7 @@ class EntrieController extends Controller
         $entries = $user->isAdmin()
             ? Entrie::paginate(10)
             : $user->entries()->paginate(10);
-        
+
         return EntrieResource::collection($entries);
     }
 
@@ -32,7 +32,6 @@ class EntrieController extends Controller
      */
     public function store(EntrieStoreRequest $request)
     {
-        $this->authorize('create', Entrie::class);
 
         $user = $request->user();
         $validated = $request->validated();
@@ -43,6 +42,8 @@ class EntrieController extends Controller
             'meal_id' => $validated['meal_id'],
             'user_id' => $user->id
         ]);
+
+        $this->authorize('create', $entrie);
 
         $entrie->save();
 
