@@ -18,7 +18,10 @@ class MealController extends Controller
         $this->authorize('viewAny', Meal::class);
 
         $user = $request->user();
-        $meals = $user->meals()->get();
+
+        $meals = $user->isAdmin()
+            ? Meal::paginate(10)
+            : $user->meals()->paginate(10);
 
         return MealResource::collection($meals);
     }
@@ -30,7 +33,7 @@ class MealController extends Controller
     {
         $user = $request->user();
         $validated = $request->validated();
-        
+
         $meal = Meal::create([
             'name' => $validated['name'],
             'entries_limit' => $validated['entries_limit'],

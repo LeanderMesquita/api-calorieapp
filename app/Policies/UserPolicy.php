@@ -13,7 +13,7 @@ class UserPolicy
      */
     public function before(User $user, string $ability): bool|null
     {
-        if ($user->role->name === 'admin') {
+        if ($user->isAdmin()) {
             return true;
         }
     

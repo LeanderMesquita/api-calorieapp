@@ -19,8 +19,11 @@ class EntrieController extends Controller
         $this->authorize('viewAny', Entrie::class);
 
         $user = $request->user();
-        $entries = $user->entries()->paginate(10);
 
+        $entries = $user->isAdmin()
+            ? Entrie::paginate(10)
+            : $user->entries()->paginate(10);
+        
         return EntrieResource::collection($entries);
     }
 

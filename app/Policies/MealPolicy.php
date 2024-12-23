@@ -9,6 +9,18 @@ use Illuminate\Auth\Access\Response;
 class MealPolicy
 {
     /**
+     * Perform pre-authorization checks.
+     */
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+    
+        return null;
+    }
+    
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
@@ -21,7 +33,7 @@ class MealPolicy
      */
     public function view(User $user, Meal $meal): bool
     {
-        return true;
+        return $user->id === $meal->user_id;
     }
 
     /**
@@ -37,7 +49,7 @@ class MealPolicy
      */
     public function update(User $user, Meal $meal): bool
     {
-        return true;
+        return $user->id === $meal->user_id;
     }
 
     /**
@@ -45,7 +57,7 @@ class MealPolicy
      */
     public function delete(User $user, Meal $meal): bool
     {
-        return true;
+        return $user->id === $meal->user_id;
     }
 
     /**
