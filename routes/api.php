@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EntrieController;
 use App\Http\Controllers\Api\MealController;
@@ -23,4 +24,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('entries', EntrieController::class)
         ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/report', [AdminController::class, 'report']);
+    });
 });
