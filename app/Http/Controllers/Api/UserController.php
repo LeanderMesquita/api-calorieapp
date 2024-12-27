@@ -56,7 +56,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $this->authorize('update', $user);
 
-        $user->name = $request->name;
+        $user->fill($validated);
         $user->save();
 
         return response()->json([

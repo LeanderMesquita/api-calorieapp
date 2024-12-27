@@ -22,14 +22,8 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'The name is required.',
+            'name' => 'nullable|string|max:255',
+            'calories_limit' => 'nullable|integer|min:0'
         ];
     }
 }
