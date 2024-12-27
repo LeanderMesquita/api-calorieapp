@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Meal extends Model
+class Entrie extends Model
 {
-
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'entries_limit',
-        'user_id'
+        'food_name',
+        'calories',
+        'user_id',
+        'meal_id'
     ];
 
     public function user()
@@ -21,8 +21,8 @@ class Meal extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function entries()
+    public function meal()
     {
-        return $this->hasMany(Entrie::class);
+        return $this->belongsTo(Meal::class);
     }
 }

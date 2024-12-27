@@ -25,7 +25,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'calories_limit'
     ];
 
     /**
@@ -59,5 +60,19 @@ class User extends Authenticatable
     public function meals()
     {
         return $this->hasMany(Meal::class);
+    }
+
+    public function entries()
+    {
+        return $this->hasMany(Entrie::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role->name === 'admin';
+    }
+
+    public function totalCalories(): int {
+        return $this->entries()->sum('calories');
     }
 }

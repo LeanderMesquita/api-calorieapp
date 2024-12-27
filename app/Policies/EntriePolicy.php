@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Entrie;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Log;
 
-class UserPolicy
+class EntriePolicy
 {
     /**
      * Perform pre-authorization checks.
@@ -16,7 +16,7 @@ class UserPolicy
         if ($user->isAdmin()) {
             return true;
         }
-    
+
         return null;
     }
 
@@ -25,45 +25,45 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Entrie $entrie): bool
     {
-        return $user->id === $model->id;
+        return $user->id === $entrie->user_id;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Entrie $entrie): bool
     {
-        return true;
+        return $user->meals()->where('id', $entrie->meal_id)->exists();
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, Entrie $entrie): bool
     {
-        return $user->id === $model->id;
+        return $user->id === $entrie->user_id && $user->meals()->where('id', $entrie->meal_id)->exists();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Entrie $entrie): bool
     {
-        return $user->id === $model->id;
+        return $user->id === $entrie->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Entrie $entrie): bool
     {
         return false;
     }
@@ -71,7 +71,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Entrie $entrie): bool
     {
         return false;
     }

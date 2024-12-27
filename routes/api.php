@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EntrieController;
 use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -9,13 +12,20 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:api');
 
-Route::post('/users', [UserController::class, 'store']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:api')->group(function () {
 
-    Route::resource('/users', UserController::class)
+    Route::apiResource('users', UserController::class)
         ->only(['index', 'show', 'update', 'destroy']);
 
     Route::apiResource('meals', MealController::class)
-        ->only(['index', 'store','show', 'update', 'destroy']);
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::apiResource('entries', EntrieController::class)
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/report', [AdminController::class, 'report']);
+    });
 });

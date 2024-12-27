@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -31,27 +32,7 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserStoreRequest $request)
-    {
-        $validated = $request->validated();
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'role_id' => 2
-        ]);
-
-        $user->save();
-        event(new Registered($user));
-        return response()->json([
-            'message' => 'User created',
-            'user' => new UserResource($user)
-        ], 201);
-    }
+   
 
     /**
      * Display the specified resource.
@@ -75,7 +56,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $this->authorize('update', $user);
 
-        $user->name = $request->name;
+        $user->fill($validated);
         $user->save();
 
         return response()->json([
