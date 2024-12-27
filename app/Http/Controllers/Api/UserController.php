@@ -32,46 +32,7 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserStoreRequest $request)
-    {
-        $validated = $request->validated();
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'role_id' => 2
-        ]);
-
-        $defaultMeals = [
-            ['name' => 'breakfast', 'entries_limit' => 3],
-            ['name' => 'lunch', 'entries_limit' => 3],
-            ['name' => 'snack', 'entries_limit' => 5],
-            ['name' => 'dinner', 'entries_limit' => 3],
-        ];
-
-        try {
-            DB::beginTransaction();
-
-            $user->save();
-
-            foreach ($defaultMeals as $meal) {
-                $user->meals()->create($meal);
-            }
-        } catch (\Throwable $th) {
-            DB::rollBack();
-        } finally {
-            DB::commit();
-        }
-
-        return response()->json([
-            'message' => 'User created',
-            'user' => new UserResource($user)
-        ], 201);
-    }
+   
 
     /**
      * Display the specified resource.
