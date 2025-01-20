@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\EntrieController;
+use App\Http\Controllers\Api\EntryController;
 use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('meals', MealController::class)
         ->only(['index', 'store', 'show', 'update', 'destroy']);
 
-    Route::apiResource('entries', EntrieController::class)
+    Route::apiResource('entries', EntryController::class)
         ->only(['index', 'store', 'show', 'update', 'destroy']);
 
     Route::prefix('admin')->group(function () {

@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function entries()
     {
-        return $this->hasMany(Entrie::class);
+        return $this->hasMany(Entry::class);
     }
 
     public function isAdmin(): bool
@@ -72,7 +72,8 @@ class User extends Authenticatable
         return $this->role->name === 'admin';
     }
 
-    public function totalCalories(): int {
+    public function totalCalories(): int
+    {
         return $this->entries()->sum('calories');
     }
 }

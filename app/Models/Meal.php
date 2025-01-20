@@ -23,6 +23,6 @@ class Meal extends Model
 
     public function entries()
     {
-        return $this->hasMany(Entrie::class);
+        return $this->hasMany(Entry::class);
     }
 }
