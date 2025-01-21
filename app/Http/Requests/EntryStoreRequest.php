@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\EntriesLimit;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EntryStoreRequest extends FormRequest
@@ -24,7 +25,7 @@ class EntryStoreRequest extends FormRequest
         return [
             'food_name' => 'required|string|max:255',
             'calories' => 'required|integer|min:0',
-            'meal_id' => 'required|exists:meals,id'
+            'meal_id' => ['required', 'exists:meals,id', new EntriesLimit()]
         ];
     }
 }
