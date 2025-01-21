@@ -19,9 +19,7 @@ class MealController extends Controller
 
         $user = $request->user();
 
-        $meals = $user->isAdmin()
-            ? Meal::paginate(10)
-            : $user->meals()->paginate(10);
+        $meals = Meal::forUser($user)->paginate(10);
 
         return MealResource::collection($meals);
     }

@@ -20,9 +20,7 @@ class EntryController extends Controller
 
         $user = $request->user();
 
-        $entries = $user->isAdmin()
-            ? Entry::paginate(10)
-            : $user->entries()->paginate(10);
+        $entries = Entry::forUser($user)->paginate(10);
 
         return EntryResource::collection($entries);
     }
